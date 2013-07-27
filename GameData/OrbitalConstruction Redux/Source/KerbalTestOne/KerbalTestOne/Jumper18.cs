@@ -82,8 +82,27 @@ namespace KerbalTestOne
         {
         	UnityEngine.MonoBehaviour.print("OrbitalConstruction: Setting orbit");  
         	
-            var vessel = FlightGlobals.fetch == null ? null : FlightGlobals.Vessels.FirstOrDefault(v => v.orbitDriver != null && v.orbit == orbit);
-            var body = FlightGlobals.fetch == null ? null : FlightGlobals.Bodies.FirstOrDefault(v => v.orbitDriver != null && v.orbit == orbit);
+            Vessel vessel = null;
+			try
+			{				
+				vessel = FlightGlobals.fetch == null ? null : FlightGlobals.Vessels.FirstOrDefault(v => v.orbitDriver != null && v.orbit == orbit);
+			}
+			catch(MissingFieldException e)
+			{
+				UnityEngine.MonoBehaviour.print("OrbitalConstruction: Missing field on FlightGlobals!");
+				UnityEngine.MonoBehaviour.print("OrbitalConstruction:" + e.ToString());
+			}
+            CelestialBody body = null;
+
+            try
+            {
+            	body = FlightGlobals.fetch == null ? null : FlightGlobals.Bodies.FirstOrDefault(v => v.orbitDriver != null && v.orbit == orbit);
+            }
+            catch(MissingFieldException e)
+			{
+				UnityEngine.MonoBehaviour.print("OrbitalConstruction: Missing field on FlightGlobals!");
+				UnityEngine.MonoBehaviour.print("OrbitalConstruction:" + e.ToString());
+			}
             if (vessel != null)
                 WarpShip(vessel, newOrbit);
             else if (body != null)
@@ -233,6 +252,8 @@ namespace KerbalTestOne
                     Orbit orb = chosenTarget.GetSafeOrbitOfDestination();
             		vessel.orbitDriver.orbit.Set(orb);
                     
+            		print("OrbitalConstruction: Set Orbit");
+            		
                     jumpState = JumpState18.Idle;
                     break;
                 case JumpState18.MicroJumpToSafeTarget:

@@ -22,12 +22,13 @@ namespace KerbalTestOne
 
     public class UIStatus
     {
-        static public bool Checked = false;
-        static public double PartsNeeded = 0;
-        static public bool StageFirst = false;
-        static public bool DockSelected = false;
-        static public bool Scanned = false;
-        //static public bool Delivered = false;
+        public bool MeasuredMass = false;
+        public double PartsNeeded = 0;
+        public bool StageFirst = false;
+        public bool DockSelected = false;
+        public bool Scanned = false;
+        public bool DockChecked = false;
+        public bool DockCanBuild = false;
     }
 
     class SpaceBuilt18 : Jumper18
@@ -47,6 +48,8 @@ namespace KerbalTestOne
         private Vessel targetVessel = null;
         private List<Vessel> docks;
         BuildMode mode;
+        
+        UIStatus uistatus = new UIStatus();
 
         private void WindowGUI(int windowID)
         {
@@ -78,21 +81,21 @@ namespace KerbalTestOne
 
             GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
             //GUILayout.Label("Needed Parts:", labelStyle);
-            if (!UIStatus.Checked)
+            if (!uistatus.MeasuredMass)
             {
-                UIStatus.PartsNeeded = SpaceDockUtilities18.DetermineMassOfVessel(vessel) * 1.25;
-                UIStatus.Checked = true;
+                uistatus.PartsNeeded = SpaceDockUtilities18.DetermineMassOfVessel(vessel) * 1.25;
+                uistatus.MeasuredMass = true;
             }
 
-            GUILayout.Box("Tons of spare parts needed for this Craft: " + UIStatus.PartsNeeded, whiSty);
+            GUILayout.Box("Tons of Rocket Parts needed for this Craft: " + uistatus.PartsNeeded, whiSty);
 
             if (chosenLaunchFacility != null)
             {
-                UIStatus.DockSelected = true;
+                uistatus.DockSelected = true;
             }
             else
             {
-                UIStatus.DockSelected = false;
+                uistatus.DockSelected = false;
             }
             switch (mode)
             {
@@ -102,24 +105,24 @@ namespace KerbalTestOne
                         //scan for spaceDocks
                         docks = SpaceDockUtilities18.GetAllSpaceDocks(vessel);
                         mode = BuildMode.Build;
-                        UIStatus.Scanned = true;
+                        uistatus.Scanned = true;
                     }
                     break;
                 case BuildMode.Build:
                     GUILayout.Box("If using Launch Stabilizers, put them alone in the first stage and check the box below!", yelSty);
-                    if (GUILayout.Toggle(UIStatus.StageFirst, "Stage before building"))
+                    if (GUILayout.Toggle(uistatus.StageFirst, "Stage before building"))
                     {
-                        UIStatus.StageFirst = true;
+                        uistatus.StageFirst = true;
                     }
                     else
                     {
-                        UIStatus.StageFirst = false;
+                        uistatus.StageFirst = false;
                     }
                     if (GUILayout.Button("Build at selected dock"))
                     {
                         if (chosenLaunchFacility.CanFacilityBuildThisVessel(vessel))
                         {
-                            if (UIStatus.StageFirst)
+                            if (uistatus.StageFirst)
                             {
                                 Staging.ActivateNextStage();
                             }
@@ -156,24 +159,30 @@ namespace KerbalTestOne
                             
                         // Get rid of the part (single-use only)
                         part.explode();
-                        UIStatus.Scanned = false;   // reset UI in case user restarts
-                        //UIStatus.Delivered = true;
+                        
                     }
                     break;
             }
 
 
-            if (UIStatus.Scanned)
+            if (uistatus.Scanned)
             {
-                if (UIStatus.DockSelected)
+                if (uistatus.DockSelected)
                 {
-                    if (chosenLaunchFacility.CanFacilityBuildThisVessel(vessel))
+                	if(!uistatus.DockChecked) {
+            			// The dock hasn't checked to see if it can build the vessel yet. Check.
+            			// This is kind of expensive, so we remember the result until we switch docks.
+                		uistatus.DockCanBuild = chosenLaunchFacility.CanFacilityBuildThisVessel(vessel);
+                		uistatus.DockChecked = true;
+                	}
+                	
+                    if (uistatus.DockCanBuild)
                     {
-                        GUILayout.Box("The chosen Dock has enough Parts to build this Craft", grnSty);
+                        GUILayout.Box("The chosen Dock has enough Rocket Parts to build this Craft", grnSty);
                     }
                     else
                     {
-                        GUILayout.Box("The chosen Dock does not have enough Parts to build this Craft", redSty);
+                        GUILayout.Box("The chosen Dock does not have enough Rocket Parts to build this Craft", redSty);
                     }
                 }
                 else
@@ -204,6 +213,10 @@ namespace KerbalTestOne
                         SetChosenTarget(chosenLaunchFacility);
                         previousIndex = targetIndex;
                         targetVessel = v;
+                        
+                        // Note that we need to re-check whether the dock can build the vessel
+                        uistatus.DockChecked = false;
+                        
                     }
                     catch
                     {
@@ -230,7 +243,7 @@ namespace KerbalTestOne
 
         private void drawGUI()
         {
-            if (vessel.isActiveVessel)
+            if (vessel != null && vessel.isActiveVessel)
             {
                 GUI.skin = HighLogic.Skin;
                 windowPos = GUILayout.Window(31, windowPos, WindowGUI, "Orbital Construction", GUILayout.MinWidth(200), GUILayout.MinHeight(200));

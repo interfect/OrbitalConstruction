@@ -25,9 +25,9 @@ namespace KerbalTestOne
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
             Part first = remoteDock.rootPart;
-            MonoBehaviour.print("Requesting " + fPenalized + " SpareParts");
-            float amount = first.RequestResource("SpareParts", fPenalized);
-            MonoBehaviour.print("Received " + amount + " SpareParts");
+            MonoBehaviour.print("Requesting " + fPenalized + " RocketParts");
+            float amount = first.RequestResource("RocketParts", fPenalized);
+            MonoBehaviour.print("Received " + amount + " RocketParts");
             if (amount < fPenalized)
             {
                 MonoBehaviour.print("Amount was less than needed");
@@ -35,8 +35,8 @@ namespace KerbalTestOne
                 return false;
             }
             
-            float returnedAmount = first.RequestResource("SpareParts", -amount);
-            MonoBehaviour.print("Returned" + returnedAmount + " SpareParts");
+            float returnedAmount = first.RequestResource("RocketParts", -amount);
+            MonoBehaviour.print("Returned" + returnedAmount + " RocketParts");
             return true;
         }
 
@@ -49,9 +49,9 @@ namespace KerbalTestOne
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
             Part first = remoteDock.rootPart;
-            MonoBehaviour.print("Requesting " + fPenalized + " SpareParts");
-            float amount = first.RequestResource("SpareParts", fPenalized);
-            MonoBehaviour.print("Received " + amount + " SpareParts");
+            MonoBehaviour.print("Requesting " + fPenalized + " RocketParts");
+            float amount = first.RequestResource("RocketParts", fPenalized);
+            MonoBehaviour.print("Received " + amount + " RocketParts");
             return true;
         }
 
