@@ -5,6 +5,9 @@ Interfect's version of Zorkinian's Orbital Construction Mod
 
 This version incorporates both evilC's changes and Interfect's new surface base functionality.
 
+4.1:
+* Stopped referencing the Kethane models since the Kethane dev asked nicely. 3D printer now has an ugly placeholder model, and needs a new one.
+
 4.0:
 
 * Updated for KSP 0.21.
