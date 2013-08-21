@@ -9,6 +9,9 @@ namespace KerbalTestOne
     class RemoteSpaceDock18 : ILaunchFacility
     {
         Vessel remoteDock;
+        
+        // How much mass is a single rocket part?
+        public static float ROCKETPARTS_DENSITY = 0.0025F;
 
         public RemoteSpaceDock18(Vessel remoteDock)
         {
@@ -21,14 +24,14 @@ namespace KerbalTestOne
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
-            float fPenalized = (float)penalizedmass;
+            float partsNeeded = (float)penalizedmass * ROCKETPARTS_DENSITY;
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
             Part first = remoteDock.rootPart;
-            MonoBehaviour.print("Requesting " + fPenalized + " RocketParts");
-            float amount = first.RequestResource("RocketParts", fPenalized);
+            MonoBehaviour.print("Requesting " + partsNeeded + " RocketParts");
+            float amount = first.RequestResource("RocketParts", partsNeeded);
             MonoBehaviour.print("Received " + amount + " RocketParts");
-            if (amount < fPenalized)
+            if (amount < partsNeeded)
             {
                 MonoBehaviour.print("Amount was less than needed");
                 //not enough. Restore parts and move on.
@@ -45,12 +48,12 @@ namespace KerbalTestOne
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
-            float fPenalized = (float)penalizedmass;
+            float partsNeeded = (float)penalizedmass * ROCKETPARTS_DENSITY;
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
             Part first = remoteDock.rootPart;
-            MonoBehaviour.print("Requesting " + fPenalized + " RocketParts");
-            float amount = first.RequestResource("RocketParts", fPenalized);
+            MonoBehaviour.print("Requesting " + partsNeeded + " RocketParts");
+            float amount = first.RequestResource("RocketParts", partsNeeded);
             MonoBehaviour.print("Received " + amount + " RocketParts");
             return true;
         }
