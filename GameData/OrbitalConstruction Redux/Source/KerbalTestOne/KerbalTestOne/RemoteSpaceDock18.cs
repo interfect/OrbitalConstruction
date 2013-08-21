@@ -24,7 +24,7 @@ namespace KerbalTestOne
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
-            float partsNeeded = (float)penalizedmass * ROCKETPARTS_DENSITY;
+            float partsNeeded = (float)penalizedmass / ROCKETPARTS_DENSITY;
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
             Part first = remoteDock.rootPart;
@@ -48,7 +48,7 @@ namespace KerbalTestOne
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
-            float partsNeeded = (float)penalizedmass * ROCKETPARTS_DENSITY;
+            float partsNeeded = (float)penalizedmass / ROCKETPARTS_DENSITY;
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
             Part first = remoteDock.rootPart;

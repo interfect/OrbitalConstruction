@@ -7,6 +7,7 @@ This version incorporates both evilC's changes and Interfect's new surface base 
 
 4.2:
 * Updated 3D Printer to work with new converter system. Works as of Kethane 0.7.7.
+* Changed RocketParts density to 1/400 tons per unit, like in Extraplanetary Launchpads. Tanks still hold the same mass, which may make them unbalanced relative to EL tanks. To use both mods together, delete this mod's resource config file.
 
 4.1:
 * Stopped referencing the Kethane models since the Kethane dev asked nicely. 3D printer now has an ugly placeholder model, and needs a new one.
