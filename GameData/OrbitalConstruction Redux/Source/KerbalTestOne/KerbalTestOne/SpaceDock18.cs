@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KerbalTestOne
+namespace OrbitalConstruction
 {
     /// <summary>
     /// This class is only used to set persistence values.
