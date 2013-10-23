@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace KerbalTestOne
+namespace OrbitalConstruction
 {
     class RemoteSpaceDock18 : ILaunchFacility
     {
@@ -24,22 +24,31 @@ namespace KerbalTestOne
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
-            float partsNeeded = (float)penalizedmass / ROCKETPARTS_DENSITY;
+            double partsNeeded = penalizedmass / (double)ROCKETPARTS_DENSITY;
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
-            Part first = remoteDock.rootPart;
-            MonoBehaviour.print("Requesting " + partsNeeded + " RocketParts");
-            float amount = first.RequestResource("RocketParts", partsNeeded);
-            MonoBehaviour.print("Received " + amount + " RocketParts");
+
+            //a more intelligent resource checking system, checks for resources instead of just requesting them through the root part. The root part won't pass along RocketParts from docked vessels. attosecond 10/22/13
+
+            double amount = 0;
+            foreach (Part w in remoteDock.parts)
+            {
+                foreach (PartResource r in w.Resources)
+                {
+                    if (r.resourceName == "RocketParts")
+                    {
+                        amount += r.amount;             //no need to check out parts and check them back in again... just ask how many are there!
+                    }
+                }
+            }
+            MonoBehaviour.print("Vessel construction requires " + partsNeeded + " RocketParts");
+            MonoBehaviour.print(amount + " RocketParts are available");
+            remoteDock.Unload();
             if (amount < partsNeeded)
             {
                 MonoBehaviour.print("Amount was less than needed");
-                //not enough. Restore parts and move on.
                 return false;
             }
-            
-            float returnedAmount = first.RequestResource("RocketParts", -amount);
-            MonoBehaviour.print("Returned" + returnedAmount + " RocketParts");
             return true;
         }
 
@@ -48,13 +57,35 @@ namespace KerbalTestOne
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
-            float partsNeeded = (float)penalizedmass / ROCKETPARTS_DENSITY;
+            double partsNeeded = penalizedmass / (double)ROCKETPARTS_DENSITY;
             //3) see if there are enough parts available by removing it, then adding it back in
             remoteDock.Load();
-            Part first = remoteDock.rootPart;
-            MonoBehaviour.print("Requesting " + partsNeeded + " RocketParts");
-            float amount = first.RequestResource("RocketParts", partsNeeded);
-            MonoBehaviour.print("Received " + amount + " RocketParts");
+
+            // again, need more intelligence than checking out RocketParts from the rootPart. attosecond 10/23/13
+            foreach (Part w in remoteDock.parts)
+            {
+                foreach (PartResource r in w.Resources)
+                {
+                    if (r.resourceName == "RocketParts")
+                    {
+                        if (r.amount < partsNeeded)
+                        {
+                            //if the warehouse doesn't have enough parts, take everything it has and let the loops iterate
+                            MonoBehaviour.print("Requesting complete warehouse inventory of " + r.amount + " RocketParts");
+                            partsNeeded -= w.RequestResource("RocketParts", r.amount);
+                            MonoBehaviour.print(partsNeeded + " RocketParts remaining for build completion");
+                        }
+                        else
+                        {
+                            //the warehouse has enough to fill our needs, so just check out the parts
+                            MonoBehaviour.print("Requesting " + partsNeeded + " RocketParts out of " + r.amount + " available.");
+                            w.RequestResource("RocketParts", partsNeeded);
+                            MonoBehaviour.print((r.amount - partsNeeded) + " RocketParts left in this warehouse");
+                            break;
+                        }
+                    }
+                }
+            }
             return true;
         }
 
