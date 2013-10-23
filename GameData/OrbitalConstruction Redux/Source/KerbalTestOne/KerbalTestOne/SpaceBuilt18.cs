@@ -1,4 +1,4 @@
-﻿// modified by evilC - evilc@evilc.com
+// modified by evilC - evilc@evilc.com
 // With 2.0 changes by Interfect
 // v 3.0
 
@@ -10,7 +10,7 @@ using UnityEngine;
 //using System.Text.RegularExpressions;
 
 
-namespace KerbalTestOne
+namespace OrbitalConstruction
 {
     public enum BuildMode
     {
