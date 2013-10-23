@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace KerbalTestOne
+namespace OrbitalConstruction
 {
 	// Ripped from HyperEdit to land the ship, seriously, you guys.
 	public class LanderAttachment : MonoBehaviour
