@@ -3,15 +3,21 @@ OrbitalConstruction
 
 Interfect's version of Zorkinian's Orbital Construction Mod
 
-This version incorporates both evilC's changes and Interfect's new surface base functionality.
+This version incorporates both evilC's changes and Interfect's new surface base functionality. This version also includes changes by attosecond (see below).
 
 Known Issues
 ------------
 
+* After building something the debug log contains tons of NullReferenceException entries at Part.RequestResource. If you switch from your newly built vessel to the spacedock using [ or ], your spacedock vessel will disintigrate. A workaround is to return to the the space center immediately after your spacedock builds the new vessel, and switch to the spacedock from the tracking station.
 * After building something at a space dock and switching to a nearby craft, the newly built craft will appear to be orbiting backwards or otherwise absurdly. Going to the space center and back will fix this issue.
 
 Changelog
 ---------
+
+4.2.1 (fork):
+* Updated project so the assembly is named OrbitalConstruction.dll
+* Simplified mass calculation and spacedock identification
+* RocketParts resources are identified and consumed on a per-part basis, rather than a per-rootpart basis. Previously, a spacedock vessel with a warehouse docked to another vessel with a warehouse would only provide the RocketParts in the warehouse that was part of the original spacedock vessel (docked vessel's RocketParts were unavailable). Now a grouping of vessels with wareshouses can be joined by docking ports and RocketParts across all vessels are available.
 
 4.2:
 * Updated 3D Printer to work with new converter system. Works as of Kethane 0.7.7.
