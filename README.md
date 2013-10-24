@@ -8,7 +8,7 @@ This version incorporates both evilC's changes and Interfect's new surface base 
 Known Issues
 ------------
 
-* After building something at a space dock and switching to a nearby craft, the newly built craft will appear to be orbiting backwards or otherwise absurdly. Going to the space center and back will fix this issue.
+* After building something at a space dock and switching to a nearby craft, the newly built craft will appear to be orbiting backwards or otherwise absurdly. Going to the space center and back will fix this issue. I (attosecond) have never seen this bug occur, however I'm not comfortable removing it from the list if I haven't seen it and actively done something to fix it.
 
 Changelog
 ---------
