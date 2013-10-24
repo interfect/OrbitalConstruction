@@ -10,13 +10,12 @@ namespace OrbitalConstruction
     {
         public static bool DetermineIfVesselIsSpaceDock(Vessel v)
         {
-            //attosecond 10/23/13, there's a simpler way to do this (see below)
-            foreach (Part p in v.parts)
+            //attosecond 10/23/13, there's a simpler way to do this, and we don't need to load a bunch of vessels into memory!
+            foreach (ProtoPartSnapshot p in v.protoVessel.protoPartSnapshots)
             {
-                if (p.name.Equals("SpaceDock"))
+                if (p.partName.Equals("SpaceDock"))
                 {
-                    MonoBehaviour.print("Found a spacedock!");
-                        return true;
+                    return true;
                 }
             }
             return false;
@@ -24,7 +23,7 @@ namespace OrbitalConstruction
 
         public static List<Vessel> GetAllSpaceDocks(Vessel currentVessel)
         {
-            int cnt = 0;
+            //attosecond 10/23/13, now the scan doesn't load a single vessel, avoiding messy conflicts (I imagine I saw some issues with KAS-enabled vessesls being loaded and unloaded.
             List<Vessel> docks = new List<Vessel>();
             foreach (Vessel v in FlightGlobals.Vessels)
             {
@@ -32,14 +31,11 @@ namespace OrbitalConstruction
                 {
                     continue;
                 }
-                v.Load();
+                //v.Load();
                 if (DetermineIfVesselIsSpaceDock(v))
                 {
                     docks.Add(v);
-                }
-                else
-                {
-                    v.Unload();                 //added by attosecond 10/22/13 to reduce memory usage. The vessel gets loaded again if/when we need to check its RocketParts reserves.
+                    MonoBehaviour.print("Vessel " + v.name + " is a spacedock!");
                 }
             }
             MonoBehaviour.print(FlightGlobals.Vessels.Count + " ships found. " + docks.Count + " are spacedocks.");
