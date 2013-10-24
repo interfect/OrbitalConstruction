@@ -13,7 +13,7 @@ Known Issues
 Changelog
 ---------
 
-4.2.1 (fork):
+4.2.1 (fork by attosecond):
 * Updated project so the assembly is named OrbitalConstruction.dll
 * Simplified mass calculation and spacedock identification
 * Greatly increased the execution speed of the "Scan for Docks" function
