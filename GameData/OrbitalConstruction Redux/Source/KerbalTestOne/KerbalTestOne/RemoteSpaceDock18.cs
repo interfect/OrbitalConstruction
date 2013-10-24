@@ -20,30 +20,28 @@ namespace OrbitalConstruction
 
         public bool CanFacilityBuildThisVessel(Vessel v)
         {
+            remoteDock.Load();
             //1) figure out the total mass of the vessel
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
             double partsNeeded = penalizedmass / (double)ROCKETPARTS_DENSITY;
-            //3) see if there are enough parts available by removing it, then adding it back in
-            remoteDock.Load();
-
-            //a more intelligent resource checking system, checks for resources instead of just requesting them through the root part. The root part won't pass along RocketParts from docked vessels. attosecond 10/22/13
-
+            //3) a more intelligent resource checking system, checks for resources instead of just requesting them through the root part. The root part won't pass along RocketParts from docked vessels. attosecond 10/22/13
             double amount = 0;
+            
             foreach (Part w in remoteDock.parts)
             {
                 foreach (PartResource r in w.Resources)
                 {
                     if (r.resourceName == "RocketParts")
                     {
-                        amount += r.amount;             //no need to check out parts and check them back in again... just ask how many are there!
+                        amount += r.amount;
                     }
                 }
             }
+
             MonoBehaviour.print("Vessel construction requires " + partsNeeded + " RocketParts");
             MonoBehaviour.print(amount + " RocketParts are available");
-            remoteDock.Unload();
             if (amount < partsNeeded)
             {
                 MonoBehaviour.print("Amount was less than needed");
@@ -54,14 +52,13 @@ namespace OrbitalConstruction
 
         public bool BuildThisVessel(Vessel v)
         {
+            remoteDock.Load();
             double totalMass = SpaceDockUtilities18.DetermineMassOfVessel(v);
             //2) multiply by penalty (%25?)
             double penalizedmass = totalMass * 1.25;
             double partsNeeded = penalizedmass / (double)ROCKETPARTS_DENSITY;
-            //3) see if there are enough parts available by removing it, then adding it back in
-            remoteDock.Load();
+            //3) see if there are enough parts, then remove them, no checkout/checkin required anymore, attosecond 10/23/13
 
-            // again, need more intelligence than checking out RocketParts from the rootPart. attosecond 10/23/13
             foreach (Part w in remoteDock.parts)
             {
                 foreach (PartResource r in w.Resources)
@@ -80,12 +77,13 @@ namespace OrbitalConstruction
                             //the warehouse has enough to fill our needs, so just check out the parts
                             MonoBehaviour.print("Requesting " + partsNeeded + " RocketParts out of " + r.amount + " available.");
                             w.RequestResource("RocketParts", partsNeeded);
-                            MonoBehaviour.print((r.amount - partsNeeded) + " RocketParts left in this warehouse");
+                            MonoBehaviour.print(r.amount + " RocketParts left in this warehouse");
                             break;
                         }
                     }
                 }
             }
+
             return true;
         }
 
