@@ -155,7 +155,6 @@ namespace OrbitalConstruction
         		UnityEngine.MonoBehaviour.print("OrbitalConstruction: Epoch " + safe.epoch.ToString() + " for ship");
         		return safe;
         	}
-            
         }
 
         public static Orbit CreateOrbit(double inc, double e, double sma, double lan, double w, double mEp, double epoch, CelestialBody body)
