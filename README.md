@@ -13,6 +13,12 @@ Known Issues
 Changelog
 ---------
 
+5.0.0 (major update by attosecond):
+* Replaced GUI and logic with resource-specific Extraplanetary Launchpads style system. Specific resources are now required to build your vessel.
+* Kerbals can no longer be built at the spacedock. Any Kerbals present will be removed from the vessel before it is built at the dock.
+* Scan for docks is now automatic--the button has been removed. Only spacedocks with enough RocketParts to build the vessel dry mass (vessel sans fuel, monopropellant, etc) will be displayed.
+* Updated parts for 0.22 career mode
+
 4.2.1 (fork by attosecond):
 * Updated project so the assembly is named OrbitalConstruction.dll
 * Simplified mass calculation and spacedock identification
