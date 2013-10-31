@@ -1,7 +1,7 @@
 OrbitalConstruction
 ===================
 
-Interfect's version of Zorkinian's Orbital Construction Mod
+Attosecond's version of Interfect's version of Zorkinian's Orbital Construction Mod
 
 This version incorporates both evilC's changes and Interfect's new surface base functionality. This version also includes changes by attosecond (see below).
 
