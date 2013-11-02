@@ -401,10 +401,14 @@ namespace OrbitalConstruction
         }
 
         #region UI stuff
-        public override void OnStart(PartModule.StartState state)
+         public override void OnStart(PartModule.StartState state)
         {
-            RenderingManager.AddToPostDrawQueue(3, new Callback(drawGUI)); //start the GUI
-            uis.GUIactive = true;
+            if (state == PartModule.StartState.None) return; //don't do anything when we start up in the loading screen
+        }
+        public override void OnAwake()
+        {
+            base.OnAwake();
+            RenderingManager.AddToPostDrawQueue(3, new Callback(drawGUI));//start the GUI
         }
         private void drawGUI()
         {
