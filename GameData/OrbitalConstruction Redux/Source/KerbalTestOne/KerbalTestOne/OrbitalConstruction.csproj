@@ -39,7 +39,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
@@ -55,7 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteSpaceDock18.cs" />
     <Compile Include="Resources.cs" />
-    <Compile Include="SpaceDock18.cs" />
     <Compile Include="VesselToBuild.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
