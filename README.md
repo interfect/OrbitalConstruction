@@ -1,17 +1,29 @@
 OrbitalConstruction
 ===================
 
-Interfect's version of Zorkinian's Orbital Construction Mod
+Attosecond's version of Interfect's version of Zorkinian's Orbital Construction Mod
 
-This version incorporates both evilC's changes and Interfect's new surface base functionality.
+This version incorporates both evilC's changes and Interfect's new surface base functionality. This version also includes changes by attosecond (see below).
 
 Known Issues
 ------------
 
-* After building something at a space dock and switching to a nearby craft, the newly built craft will appear to be orbiting backwards or otherwise absurdly. Going to the space center and back will fix this issue.
+* After building something at a space dock and switching to a nearby craft, the newly built craft will appear to be orbiting backwards or otherwise absurdly. Going to the space center and back will fix this issue. I (attosecond) have never seen this bug occur, however I'm not comfortable removing it from the list if I haven't seen it and actively done something to fix it.
 
 Changelog
 ---------
+
+5.0.0 (major update by attosecond):
+* Replaced GUI and logic with resource-specific Extraplanetary Launchpads style system. Specific resources are now required to build your vessel.
+* Kerbals can no longer be built at the spacedock. Any Kerbals present will be removed from the vessel before it is built at the dock.
+* Scan for docks is now automatic--the button has been removed. Only spacedocks with enough RocketParts to build the vessel dry mass (vessel sans fuel, monopropellant, etc) will be displayed.
+* Updated parts for 0.22 career mode
+
+4.2.1 (fork by attosecond):
+* Updated project so the assembly is named OrbitalConstruction.dll
+* Simplified mass calculation and spacedock identification
+* Greatly increased the execution speed of the "Scan for Docks" function
+* RocketParts resources are identified and consumed on a per-part basis, rather than a per-rootpart basis. Previously, a spacedock vessel with a warehouse docked to another vessel with a warehouse would only provide the RocketParts in the warehouse that was part of the original spacedock vessel (docked vessel's RocketParts were unavailable). Now a grouping of vessels with wareshouses can be joined by docking ports and RocketParts across all vessels are available.
 
 4.2:
 * Updated 3D Printer to work with new converter system. Works as of Kethane 0.7.7.
